@@ -1,0 +1,24 @@
+# Build matrix / environment variable are explained on:
+# http://about.travis-ci.org/docs/user/build-configuration/
+# This file can be validated on:
+# http://lint.travis-ci.org/
+sudo: required
+
+language: ruby
+
+rvm:
+  - 2.3
+
+services:
+  - docker
+
+env:
+  - TERRAFORM_VERSION=0.11.1 IMAGE_NAME=azure-network-module
+
+jobs:
+  include:
+    - stage: rake full
+      install: true
+      script:
+      - docker build --build-arg BUILD_TERRAFORM_VERSION=${TERRAFORM_VERSION} -t ${IMAGE_NAME} .
+      - docker run ${IMAGE_NAME} rake full
