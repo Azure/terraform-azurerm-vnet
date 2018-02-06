@@ -1,24 +1,19 @@
-# Build matrix / environment variable are explained on:
-# http://about.travis-ci.org/docs/user/build-configuration/
-# This file can be validated on:
-# http://lint.travis-ci.org/
-sudo: required
-
+sudo: true
+dist: trusty
 language: ruby
-
 rvm:
   - 2.3
 
 services:
   - docker
 
-env:
-  - TERRAFORM_VERSION=0.11.1 IMAGE_NAME=azure-vnet-module
-
 jobs:
   include:
-    - stage: rake full
+    - stage: rake build
       install: true
       script:
-      - docker build --build-arg BUILD_TERRAFORM_VERSION=${TERRAFORM_VERSION} -t ${IMAGE_NAME} .
-      - docker run ${IMAGE_NAME} rake full
+      - docker run -v $PWD:/tf-test/module --rm microsoft/terraform-test rake -f ../Rakefile build
+    - stage: rake e2e
+      install: true
+      script:
+      - docker run -v $PWD:/tf-test/module -e ARM_CLIENT_ID -e ARM_TENANT_ID -e ARM_SUBSCRIPTION_ID -e ARM_CLIENT_SECRET -e ARM_TEST_LOCATION -e ARM_TEST_LOCATION_ALT --rm microsoft/terraform-test rake -f ../Rakefile e2e
