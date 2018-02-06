@@ -7,3 +7,4 @@ terraform.log
 # Module directory
 .terraform/
 logs/
+terraform.tfstate.d/
