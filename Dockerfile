@@ -2,7 +2,7 @@
 ARG BUILD_TERRAFORM_VERSION="0.11.1"
 FROM microsoft/terraform-test:${BUILD_TERRAFORM_VERSION}
 
-ARG MODULE_NAME="terraform-azurerm-network"
+ARG MODULE_NAME="terraform-azurerm-vnet"
 
 # Declare default build configurations for terraform.
 ARG BUILD_ARM_SUBSCRIPTION_ID=""
