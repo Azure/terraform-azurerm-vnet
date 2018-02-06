@@ -1,5 +1,5 @@
 # terraform-azurerm-network #
-[![Build Status](https://travis-ci.org/Azure/terraform-azurerm-network.svg?branch=master)](https://travis-ci.org/Azure/terraform-azurerm-network)
+[![Build Status](https://travis-ci.org/Azure/terraform-azurerm-vnet.svg?branch=master)](https://travis-ci.org/Azure/terraform-azurerm-vnet)
 
 Create a basic network in Azure
 ==============================================================================
@@ -13,7 +13,7 @@ Usage
 
 ```hcl
 module "network" {
-    source              = "Azure/network/azurerm"
+    source              = "Azure/vnet/azurerm"
     resource_group_name = "myapp"
     location            = "westus"
     address_space       = "10.0.0.0/16"
@@ -35,7 +35,7 @@ Example adding a network security rule for SSH:
 variable "resource_group_name" { }
 
 module "network" {
-  source              = "../terraform-azurerm-network"
+  source              = "Azure/vnet/azurerm"
   resource_group_name = "${var.resource_group_name}"
   location            = "westus"
   address_space       = "10.0.0.0/16"
