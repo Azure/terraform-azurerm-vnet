@@ -1,7 +1,9 @@
 # Compiled files
 *.tfstate
 *.tfstate.backup
+.DS_Store
+terraform.log
 
 # Module directory
 .terraform/
-.DS_Store/
+logs/
