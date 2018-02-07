@@ -1,7 +1,7 @@
-# terraform-azurerm-network #
+# terraform-azurerm-vnet #
 [![Build Status](https://travis-ci.org/Azure/terraform-azurerm-vnet.svg?branch=master)](https://travis-ci.org/Azure/terraform-azurerm-vnet)
 
-Create a basic network in Azure
+Create a basic virtual network in Azure
 ==============================================================================
 
 This Terraform module deploys a Virtual Network in Azure with a subnet or a set of subnets passed in as input parameters.
@@ -12,7 +12,7 @@ Usage
 -----
 
 ```hcl
-module "network" {
+module "vnet" {
     source              = "Azure/vnet/azurerm"
     resource_group_name = "myapp"
     location            = "westus"
@@ -34,7 +34,7 @@ Example adding a network security rule for SSH:
 ```hcl
 variable "resource_group_name" { }
 
-module "network" {
+module "vnet" {
   source              = "Azure/vnet/azurerm"
   resource_group_name = "${var.resource_group_name}"
   location            = "westus"
@@ -57,7 +57,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_network_security_group" "ssh" {
-  depends_on          = ["module.network"]
+  depends_on          = ["module.vnet"]
   name                = "ssh"
   location            = "westus"
   resource_group_name = "${var.resource_group_name}"
