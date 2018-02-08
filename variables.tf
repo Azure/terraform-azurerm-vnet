@@ -36,12 +36,12 @@ variable "subnet_names" {
 
 variable "nsg_ids" {
   description = "A map of subnet name to Network Security Group IDs"
-  type = "map"
+  type        = "map"
 
   default = {
     subnet1 = "nsgid1"
     subnet3 = "nsgid3"
-  } 
+  }
 }
 
 variable "tags" {
