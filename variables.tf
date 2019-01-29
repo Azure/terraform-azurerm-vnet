@@ -15,7 +15,7 @@ variable "location" {
 
 variable "address_space" {
   description = "The address space that is used by the virtual network."
-  default     = "10.0.0.0/16"
+  default     = ["10.0.0.0/16"]
 }
 
 # If no values specified, this defaults to Azure DNS
