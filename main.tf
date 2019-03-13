@@ -14,10 +14,23 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                      = "${var.subnet_names[count.index]}"
+  count                     = "${length(var.subnets)}"
+  name                      = "${lookup(var.subnets[count.index], "name")}"
   virtual_network_name      = "${azurerm_virtual_network.vnet.name}"
   resource_group_name       = "${azurerm_resource_group.vnet.name}"
-  address_prefix            = "${var.subnet_prefixes[count.index]}"
-  network_security_group_id = "${lookup(var.nsg_ids,var.subnet_names[count.index],"")}"
-  count                     = "${length(var.subnet_names)}"
+  address_prefix            = "${lookup(var.subnets[count.index], "prefix")}"
+  network_security_group_id = "${lookup(var.subnets[count.index], "nsg_id","")}"
 }
+
+#module "network_security_group" "nsg" {
+#  source   = "../terraform-azurerm-network-security-group"
+#  location = "${var.location}"
+#}
+
+
+#resource "azurerm_subnet_network_security_group_association" "nsg_association" {
+#  count                     = "${length(var.subnets)}"
+#  subnet_id                 = "${azurerm_subnet.subnet.*.id[count.index]}"
+#  network_security_group_id = "${lookup(var.subnets[count.index], "nsg_id","")}"
+#}
+
