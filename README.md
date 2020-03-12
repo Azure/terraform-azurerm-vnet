@@ -11,32 +11,15 @@ The module does not create nor expose a security group. This would need to be de
 ## Usage
 
 ```hcl
-module "vnet" {
-    source              = "Azure/vnet/azurerm"
-    resource_group_name = "myapp"
-    location            = "westus"
-    address_space       = "10.0.0.0/16"
-    subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-    subnet_names        = ["subnet1", "subnet2", "subnet3"]
-
-    tags                = {
-                            environment = "dev"
-                            costcenter  = "it"
-                          }
+resource "azurerm_resource_group" "example" {
+  name     = "my-resources"
+  location = "West Europe"
 }
-
-```
-
-## Example adding a network security rule for SSH
-
-```hcl
-variable "resource_group_name" { }
 
 module "vnet" {
   source              = "Azure/vnet/azurerm"
-  resource_group_name = "${var.resource_group_name}"
-  location            = "westus"
-  address_space       = "10.0.0.0/16"
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
   subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
 
@@ -46,12 +29,34 @@ module "vnet" {
   }
 }
 
-resource "azurerm_subnet" "subnet" {
-  name  = "subnet1"
-  address_prefix = "10.0.1.0/24"
-  resource_group_name = "${var.resource_group_name}"
-  virtual_network_name = "acctvnet"
-  network_security_group_id = "${azurerm_network_security_group.ssh.id}"
+```
+
+## Example adding a network security rule for SSH
+
+```hcl
+resource "azurerm_resource_group" "example" {
+  name     = "my-resources"
+  location = "West Europe"
+}
+
+module "vnet" {
+  source              = "Azure/vnet/azurerm"
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  subnet_names        = ["subnet1", "subnet2", "subnet3"]
+
+  nsg_ids = {
+    subnet1 = azurerm_network_security_group.ssh.id
+    subnet2 = azurerm_network_security_group.ssh.id
+    subnet3 = azurerm_network_security_group.ssh.id
+  }
+
+
+  tags = {
+    environment = "dev"
+    costcenter  = "it"
+  }
 }
 
 resource "azurerm_network_security_group" "ssh" {
