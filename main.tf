@@ -25,10 +25,14 @@ data "azurerm_subnet" "import" {
   name                 = each.key
   resource_group_name  = data.azurerm_resource_group.vnet.name
   virtual_network_name = azurerm_virtual_network.vnet.name
+
+  depends_on = ["azurerm_subnet.subnet"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "vnet" {
   for_each                  = var.nsg_ids
   subnet_id                 = data.azurerm_subnet.import[each.key].id
   network_security_group_id = each.value
+
+  depends_on = ["data.azurerm_subnet.import"]
 }
