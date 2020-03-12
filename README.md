@@ -11,6 +11,10 @@ The module does not create nor expose a security group. This would need to be de
 ## Usage
 
 ```hcl
+provider "azurerm" {
+  features {}
+}
+
 resource "azurerm_resource_group" "example" {
   name     = "my-resources"
   location = "West Europe"
@@ -34,6 +38,10 @@ module "vnet" {
 ## Example adding a network security rule for SSH
 
 ```hcl
+provider "azurerm" {
+  features {}
+}
+
 resource "azurerm_resource_group" "example" {
   name     = "my-resources"
   location = "West Europe"
