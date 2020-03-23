@@ -121,7 +121,7 @@ Then simply run it in local shell:
 $ cd $GOPATH/src/{directory_name}/
 $ bundle install
 $ rake build
-$ rake e2e
+$ rake full
 ```
 
 ### Docker
