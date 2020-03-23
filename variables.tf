@@ -4,18 +4,13 @@ variable "vnet_name" {
 }
 
 variable "resource_group_name" {
-  description = "Default resource group name that the network will be created in."
-  default     = "myapp-rg"
-}
-
-variable "location" {
-  description = "The location/region where the core network will be created. The full list of Azure regions can be found at https://azure.microsoft.com/regions"
-  default     = "westus"
+  description = "Name of the resource group to be imported."
 }
 
 variable "address_space" {
+  type        = list(string)
   description = "The address space that is used by the virtual network."
-  default     = "10.0.0.0/16"
+  default     = ["10.0.0.0/16"]
 }
 
 # If no values specified, this defaults to Azure DNS 
@@ -36,20 +31,17 @@ variable "subnet_names" {
 
 variable "nsg_ids" {
   description = "A map of subnet name to Network Security Group IDs"
-  type        = "map"
+  type        = map(string)
 
   default = {
-    subnet1 = "nsgid1"
-    subnet3 = "nsgid3"
   }
 }
 
 variable "tags" {
   description = "The tags to associate with your network and subnets."
-  type        = "map"
+  type        = map(string)
 
   default = {
-    tag1 = ""
-    tag2 = ""
+    ENV = "test"
   }
 }
