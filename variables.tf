@@ -50,3 +50,14 @@ variable "subnet_service_endpoints" {
   description = "a list of service endpoints to add to the subnet. Each element of the list is a list of service endpoints to be applied to subnet of the same index"
   default     = [[], ]
 }
+
+
+variable "subnet_enforce_private_link_endpoint" {
+  description = "Enable or Disable network policies for the private link endpoint on the created subnets. Default value is false. Conflicts with enforce_private_link_service_network_policies."
+  default     = false
+}
+
+variable "subnet_enforce_private_link_service" {
+  description = "Enable or Disable network policies for the private link service on the created subnets. Default valule is false. Conflicts with enforce_private_link_endpoint_network_policies"
+  default     = false
+}
