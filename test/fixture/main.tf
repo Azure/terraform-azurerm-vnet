@@ -18,8 +18,8 @@ resource "azurerm_network_security_group" "nsg1" {
 }
 
 resource "azurerm_route_table" "rt1" {
-  location = azurerm_resource_group.test.location
-  name = "test-${random_id.rg_name.hex}-rt"
+  location            = azurerm_resource_group.test.location
+  name                = "test-${random_id.rg_name.hex}-rt"
   resource_group_name = azurerm_resource_group.test.name
 }
 

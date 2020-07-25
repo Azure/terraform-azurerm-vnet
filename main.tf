@@ -36,7 +36,7 @@ resource "azurerm_subnet_network_security_group_association" "vnet" {
 }
 
 resource "azurerm_subnet_route_table_association" "vnet" {
-  for_each = var.route_tables_ids
+  for_each       = var.route_tables_ids
   route_table_id = each.value
-  subnet_id = data.azurerm_subnet.import[each.key].id
+  subnet_id      = data.azurerm_subnet.import[each.key].id
 }
