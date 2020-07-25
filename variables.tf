@@ -37,6 +37,12 @@ variable "nsg_ids" {
   }
 }
 
+variable "route_tables_ids" {
+  description = "A map of subnet name to Route table ids"
+  type = map(string)
+  default = {}
+}
+
 variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)
