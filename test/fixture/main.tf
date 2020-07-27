@@ -17,6 +17,12 @@ resource "azurerm_network_security_group" "nsg1" {
   location            = azurerm_resource_group.test.location
 }
 
+resource "azurerm_route_table" "rt1" {
+  location            = azurerm_resource_group.test.location
+  name                = "test-${random_id.rg_name.hex}-rt"
+  resource_group_name = azurerm_resource_group.test.name
+}
+
 module "vnet" {
   source              = "../../"
   resource_group_name = azurerm_resource_group.test.name
@@ -26,6 +32,10 @@ module "vnet" {
 
   nsg_ids = {
     subnet1 = azurerm_network_security_group.nsg1.id
+  }
+
+  route_tables_ids = {
+    subnet1 = azurerm_route_table.rt1.id
   }
 
   tags = {
