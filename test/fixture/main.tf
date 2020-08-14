@@ -34,6 +34,11 @@ module "vnet" {
     subnet1 = azurerm_network_security_group.nsg1.id
   }
 
+  subnet_service_endpoints = {
+    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+    subnet3 = ["Microsoft.AzureActiveDirectory"]
+  }
+
   route_tables_ids = {
     subnet1 = azurerm_route_table.rt1.id
   }
@@ -42,6 +47,8 @@ module "vnet" {
     environment = "dev"
     costcenter  = "it"
   }
+
+  depends_on = [azurerm_resource_group.test]
 }
 
 
