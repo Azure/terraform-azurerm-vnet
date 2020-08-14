@@ -39,7 +39,6 @@ module "vnet" {
 
   depends_on = [azurerm_resource_group.example]
 }
-
 ```
 
 ## Usage in Terraform 0.12
@@ -69,7 +68,6 @@ module "vnet" {
 
   depends_on = [azurerm_resource_group.example]
 }
-
 ```
 
 ## Example adding a network security rule for SSH
@@ -145,7 +143,7 @@ module "vnet" {
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
 
   route_table_ids = {
-    subnet1 = azurerm_route_table.example.id
+    subnet1 = azurerm_route_table.example.id 
     subnet2 = azurerm_route_table.example.id
     subnet3 = azurerm_roiute_table.example.id
   }
