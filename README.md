@@ -8,7 +8,40 @@ This Terraform module deploys a Virtual Network in Azure with a subnet or a set 
 
 The module does not create nor expose a security group. This would need to be defined separately as additional security rules on subnets in the deployed network.
 
-## Usage
+## Usage in Terraform 0.13
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "my-resources"
+  location = "West Europe"
+}
+
+module "vnet" {
+  source              = "Azure/vnet/azurerm"
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  subnet_names        = ["subnet1", "subnet2", "subnet3"]
+
+  subnet_service_endpoints = {
+    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+    subnet3 = ["Microsoft.AzureActiveDirectory"]
+  }
+
+  tags = {
+    environment = "dev"
+    costcenter  = "it"
+  }
+
+  depends_on = [azurerm_resource_group.example]
+}
+```
+
+## Usage in Terraform 0.12
 
 ```hcl
 provider "azurerm" {
@@ -32,7 +65,6 @@ module "vnet" {
     costcenter  = "it"
   }
 }
-
 ```
 
 ## Example adding a network security rule for SSH
@@ -108,7 +140,7 @@ module "vnet" {
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
 
   route_table_ids = {
-    subnet1 = azurerm_route_table.example.id 
+    subnet1 = azurerm_route_table.example.id
     subnet2 = azurerm_route_table.example.id
     subnet3 = azurerm_roiute_table.example.id
   }
