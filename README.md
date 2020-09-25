@@ -138,7 +138,7 @@ module "vnet" {
   subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
 
-  route_table_ids = {
+  route_tables_ids = {
     subnet1 = azurerm_route_table.example.id
     subnet2 = azurerm_route_table.example.id
     subnet3 = azurerm_roiute_table.example.id
