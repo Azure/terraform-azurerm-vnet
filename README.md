@@ -100,7 +100,6 @@ module "vnet" {
 }
 
 resource "azurerm_network_security_group" "ssh" {
-  depends_on          = [module.vnet]
   name                = "ssh"
   location            = "westus"
   resource_group_name = "${var.resource_group_name}"
