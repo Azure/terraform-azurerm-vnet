@@ -21,23 +21,21 @@ resource "azurerm_subnet" "subnet" {
   service_endpoints    = lookup(var.subnet_service_endpoints, var.subnet_names[count.index], null)
 }
 
-data "azurerm_subnet" "import" {
-  for_each             = var.nsg_ids
-  name                 = each.key
-  resource_group_name  = data.azurerm_resource_group.vnet.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-
-  depends_on = [azurerm_subnet.subnet]
+locals {
+  azurerm_subnets = {
+    for index, subnet in azurerm_subnet.subnet :
+    subnet.name => subnet.id
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "vnet" {
   for_each                  = var.nsg_ids
-  subnet_id                 = data.azurerm_subnet.import[each.key].id
+  subnet_id                 = local.azurerm_subnets[each.key]
   network_security_group_id = each.value
 }
 
 resource "azurerm_subnet_route_table_association" "vnet" {
   for_each       = var.route_tables_ids
   route_table_id = each.value
-  subnet_id      = data.azurerm_subnet.import[each.key].id
+  subnet_id      = local.azurerm_subnets[each.key]
 }

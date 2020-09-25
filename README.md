@@ -101,8 +101,8 @@ module "vnet" {
 
 resource "azurerm_network_security_group" "ssh" {
   name                = "ssh"
-  location            = "westus"
-  resource_group_name = "${var.resource_group_name}"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
 
   security_rule {
     name                       = "test123"
@@ -152,9 +152,9 @@ module "vnet" {
 }
 
 resource "azurerm_route_table" "example" {
-  location            = azurerm_resource_group.example.location
   name                = "MyRouteTable"
   resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
 }
 
 resource "azurerm_route" "example" {
