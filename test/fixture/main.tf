@@ -48,6 +48,14 @@ module "vnet" {
     costcenter  = "it"
   }
 
+  subnet_enforce_private_link_endpoint_network_policies = {
+    subnet2 = true
+  }
+
+  subnet_enforce_private_link_service_network_policies = {
+    subnet3 = true
+  }
+
   depends_on = [azurerm_resource_group.test]
 }
 
