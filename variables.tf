@@ -40,6 +40,18 @@ variable "subnet_service_endpoints" {
   default     = {}
 }
 
+variable "subnet_enforce_private_link_endpoint_network_policies" {
+  description = "A map of subnet name to enable/disable private link endpoint network policies on the subnet."
+  type        = map(any)
+  default     = {}
+}
+
+variable "subnet_enforce_private_link_service_network_policies" {
+  description = "A map of subnet name to enable/disable private link service network policies on the subnet."
+  type        = map(any)
+  default     = {}
+}
+
 variable "nsg_ids" {
   description = "A map of subnet name to Network Security Group IDs"
   type        = map(string)
