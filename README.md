@@ -141,7 +141,7 @@ module "vnet" {
   route_tables_ids = {
     subnet1 = azurerm_route_table.example.id
     subnet2 = azurerm_route_table.example.id
-    subnet3 = azurerm_roiute_table.example.id
+    subnet3 = azurerm_route_table.example.id
   }
 
 
