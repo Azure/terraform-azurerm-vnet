@@ -14,13 +14,13 @@ resource "azurerm_resource_group" "test" {
 resource "azurerm_network_security_group" "nsg1" {
   name                = "test-${random_id.rg_name.hex}-nsg"
   resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+  location            = var.vnet_location
 }
 
 resource "azurerm_route_table" "rt1" {
-  location            = azurerm_resource_group.test.location
   name                = "test-${random_id.rg_name.hex}-rt"
   resource_group_name = azurerm_resource_group.test.name
+  location            = var.vnet_location
 }
 
 module "vnet" {
@@ -29,6 +29,7 @@ module "vnet" {
   address_space       = ["10.0.0.0/16"]
   subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
+  vnet_location       = var.vnet_location
 
   nsg_ids = {
     subnet1 = azurerm_network_security_group.nsg1.id

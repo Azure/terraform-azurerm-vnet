@@ -1,1 +1,2 @@
-location = "westus"
+location      = "westus"
+vnet_location = "eastus"
