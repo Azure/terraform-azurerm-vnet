@@ -14,13 +14,13 @@ resource "azurerm_resource_group" "test" {
 resource "azurerm_network_security_group" "nsg1" {
   name                = "test-${random_id.rg_name.hex}-nsg"
   resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+  location            = var.vnet_location
 }
 
 resource "azurerm_route_table" "rt1" {
-  location            = azurerm_resource_group.test.location
   name                = "test-${random_id.rg_name.hex}-rt"
   resource_group_name = azurerm_resource_group.test.name
+  location            = var.vnet_location
 }
 
 module "vnet" {
