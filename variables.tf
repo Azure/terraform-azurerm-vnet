@@ -74,3 +74,9 @@ variable "tags" {
     ENV = "test"
   }
 }
+
+variable "vnet_location" {
+  description = "The location of the vnet to create. Defaults to the location of the resource group."
+  type        = string
+  default     = null
+}
