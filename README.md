@@ -141,7 +141,7 @@ module "vnet" {
   route_tables_ids = {
     subnet1 = azurerm_route_table.example.id
     subnet2 = azurerm_route_table.example.id
-    subnet3 = azurerm_roiute_table.example.id
+    subnet3 = azurerm_route_table.example.id
   }
 
 
@@ -166,6 +166,64 @@ resource "azurerm_route" "example" {
 }
 
 ```
+
+## Example configuring private link endpoint network policy
+
+```hcl
+module "vnet" {
+  source              = "Azure/vnet/azurerm"
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  subnet_names        = ["subnet1", "subnet2", "subnet3"]
+
+  subnet_service_endpoints = {
+    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+    subnet3 = ["Microsoft.AzureActiveDirectory"]
+  }
+
+  subnet_enforce_private_link_endpoint_network_policies = {
+    "subnet2" = true,
+    "subnet3" = true
+  }
+
+  tags = {
+    environment = "dev"
+    costcenter  = "it"
+  }
+
+  depends_on = [azurerm_resource_group.example]
+}
+```
+
+## Example configuring private link service network policy
+
+```hcl
+module "vnet" {
+  source              = "Azure/vnet/azurerm"
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  subnet_names        = ["subnet1", "subnet2", "subnet3"]
+
+  subnet_service_endpoints = {
+    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
+    subnet3 = ["Microsoft.AzureActiveDirectory"]
+  }
+
+  subnet_enforce_private_link_service_network_policies = {
+    "subnet3" = true
+  }
+
+  tags = {
+    environment = "dev"
+    costcenter  = "it"
+  }
+
+  depends_on = [azurerm_resource_group.example]
+}
+```
+
 ## Test
 
 ### Configurations
