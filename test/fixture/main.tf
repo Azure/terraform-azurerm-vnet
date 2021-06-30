@@ -40,6 +40,19 @@ module "vnet" {
     subnet3 = ["Microsoft.AzureActiveDirectory"]
   }
 
+  subnet_delegation = {
+    subnet2 = {
+      "Microsoft.Sql.managedInstances" = {
+        service_name = "Microsoft.Sql/managedInstances"
+        service_actions = [
+          "Microsoft.Network/virtualNetworks/subnets/join/action",
+          "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+          "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+        ]
+      }
+    }
+  }
+
   route_tables_ids = {
     subnet1 = azurerm_route_table.rt1.id
   }
