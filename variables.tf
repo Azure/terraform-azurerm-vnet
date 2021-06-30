@@ -52,6 +52,12 @@ variable "subnet_enforce_private_link_service_network_policies" {
   default     = {}
 }
 
+variable "subnet_delegation" {
+  description = "A map of subnet name to delegation block on the subnet"
+  type        = map(map(any))
+  default     = {}
+}
+
 variable "nsg_ids" {
   description = "A map of subnet name to Network Security Group IDs"
   type        = map(string)
