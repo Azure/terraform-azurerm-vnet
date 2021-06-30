@@ -1,9 +1,9 @@
 #Azure Generic vNet Module
-data azurerm_resource_group "vnet" {
+data "azurerm_resource_group" "vnet" {
   name = var.resource_group_name
 }
 
-resource azurerm_virtual_network "vnet" {
+resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   resource_group_name = data.azurerm_resource_group.vnet.name
   location            = var.vnet_location != null ? var.vnet_location : data.azurerm_resource_group.vnet.location
@@ -21,6 +21,15 @@ resource "azurerm_subnet" "subnet" {
   service_endpoints                              = lookup(var.subnet_service_endpoints, var.subnet_names[count.index], null)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_enforce_private_link_endpoint_network_policies, var.subnet_names[count.index], false)
   enforce_private_link_service_network_policies  = lookup(var.subnet_enforce_private_link_service_network_policies, var.subnet_names[count.index], false)
+
+  dynamic "delegation" {
+    for_each = lookup(var.subnet_delegation, var_subnet_names[count.index], {})
+    name     = lookup(delegation.value, "name")
+    service_delegation {
+      name    = lookup(delegation.value, "service_name")
+      actions = lookup(delegation.value, "service_actions", [])
+    }
+  }
 }
 
 locals {
