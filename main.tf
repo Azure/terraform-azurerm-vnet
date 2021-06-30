@@ -23,11 +23,13 @@ resource "azurerm_subnet" "subnet" {
   enforce_private_link_service_network_policies  = lookup(var.subnet_enforce_private_link_service_network_policies, var.subnet_names[count.index], false)
 
   dynamic "delegation" {
-    for_each = lookup(var.subnet_delegation, var_subnet_names[count.index], {})
-    name     = lookup(delegation.value, "name")
-    service_delegation {
-      name    = lookup(delegation.value, "service_name")
-      actions = lookup(delegation.value, "service_actions", [])
+    for_each = lookup(var.subnet_delegation, var.subnet_names[count.index], {})
+    content {
+      name = delegation.key
+      service_delegation {
+        name    = lookup(delegation.value, "service_name")
+        actions = lookup(delegation.value, "service_actions", [])
+      }
     }
   }
 }
