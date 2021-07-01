@@ -7,11 +7,11 @@ require 'bundler/setup'
 require 'terramodtest'
 
 namespace :presteps do
-  task :ensure do
-    puts "Using dep ensure to install required go packages.\n"
-    success = system ("dep ensure")
+  task :clean do
+    puts "Clean out the temporary terraform files in test folder.\n"
+    success = FileUtils.rm_r(['./test/fixture/.terraform', './test/fixture/.terraform.lock.hcl'])
     if not success 
-      raise "ERROR: Dep ensure failed!\n".red
+      raise "ERROR: Clean task failed!\n".red
     end
   end
 end
@@ -43,7 +43,7 @@ namespace :integration do
   end
 end
 
-task :prereqs => [ 'presteps:ensure' ]
+task :prereqs => [ 'presteps:clean' ]
 
 task :validate => [ 'static:style', 'static:lint', 'static:readme_style','static:fixture_style' ]
 
