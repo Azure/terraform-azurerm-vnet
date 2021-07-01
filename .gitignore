@@ -35,3 +35,4 @@ tags
 
 # Ruby download package lock file.
 Gemfile.lock
+go.sum
