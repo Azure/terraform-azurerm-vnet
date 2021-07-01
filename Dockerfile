@@ -34,4 +34,6 @@ ENV PATH /usr/local/go/bin:$GOPATH/bin:$PATH
 RUN go get github.com/katbyte/terrafmt
 RUN /bin/bash -c "curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh"
 
+RUN ["bundle", "update", "--bundler"]
 RUN ["bundle", "install", "--gemfile", "./Gemfile"]
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
