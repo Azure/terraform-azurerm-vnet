@@ -7,12 +7,25 @@ require 'bundler/setup'
 require 'terramodtest'
 
 namespace :presteps do
+  task :fmt do
+    puts "Format Terraform code.\n"
+    success = system('terraform fmt --recursive .')
+    if not success 
+      raise "ERROR: Terraform format failed.\n".red
+    end
+  end
+
+  task :ensure do
+    puts "Downloading missing go modules and remove unused ones.\n"
+    success = system('go get github.com/katbyte/terrafmt && go mod tidy')
+    if not success 
+      raise "ERROR: Failed to tidy go depedencies!\n".red
+    end
+  end
+
   task :clean do
     puts "Clean out the temporary terraform files in test folder.\n"
-    success = FileUtils.rm_r(['./test/fixture/.terraform', './test/fixture/.terraform.lock.hcl'])
-    if not success 
-      raise "ERROR: Clean task failed!\n".red
-    end
+    FileUtils.rm_r(['./test/fixture/.terraform', './test/fixture/.terraform.lock.hcl'], force: true)
   end
 end
 
@@ -34,16 +47,23 @@ namespace :static do
   end
 end
 
-namespace :integration do
-  task :test do
-    success = system ("go test -v ./test/ -timeout 20m")
+namespace :test do
+  task :unit do
+    success = system ("go test -v ./test/unit/ -timeout 20m")
+    if not success 
+      raise "ERROR: Go test failed!\n".red
+    end
+  end
+
+  task :integration do
+    success = system ("go test -v ./test/integration -timeout 20m")
     if not success 
       raise "ERROR: Go test failed!\n".red
     end
   end
 end
 
-task :prereqs => [ 'presteps:clean' ]
+task :prereqs => [  'presteps:fmt', 'presteps:ensure', 'presteps:clean' ]
 
 task :validate => [ 'static:style', 'static:lint', 'static:readme_style','static:fixture_style' ]
 
@@ -51,9 +71,9 @@ task :format => [ 'static:format' ]
 
 task :build => [ 'prereqs', 'validate' ]
 
-task :unit => []
+task :unit => [  'build', 'test:unit' ]
 
-task :e2e => [ 'integration:test' ]
+task :e2e => [  'build', 'test:integration' ]
 
 task :default => [ 'build' ]
 
