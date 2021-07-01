@@ -4,6 +4,7 @@ terraform.tfvars
 # Compiled files
 *.tfstate
 *.tfstate.backup
+.terraform.lock.hcl
 .DS_Store
 terraform.log
 
