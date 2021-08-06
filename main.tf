@@ -41,3 +41,14 @@ resource "azurerm_subnet_route_table_association" "vnet" {
   route_table_id = each.value
   subnet_id      = local.azurerm_subnets[each.key]
 }
+  
+ dynamic "delegation" {
+    for_each = lookup(var.delegation_name, var.subnet_names[count.index], null) == null ? []:[1]
+    content {
+      name = lookup(var.delegation_name, var.subnet_names[count.index], null)
+      service_delegation {
+        name    = lookup(var.service_delegation_name, var.subnet_names[count.index], null)
+        actions = lookup(var.service_delegation_actions, var.subnet_names[count.index], null)
+      }
+    }
+  }
