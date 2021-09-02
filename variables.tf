@@ -80,3 +80,9 @@ variable "vnet_location" {
   type        = string
   default     = null
 }
+
+variable "vnet_peer_ids"{
+  description = "A list of Azure resource IDs of the remote virtual network. Changing this forces a new resource to be created"
+  type        = list(string)
+  default     = []
+}
