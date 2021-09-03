@@ -43,10 +43,9 @@ resource "azurerm_subnet_route_table_association" "vnet" {
 }
 
 resource "azurerm_virtual_network_peering" "vnet_peering" {
-
-  count = length(var.vnet_peer_ids)
-  name                      = format("%s%s", "VNP", count.index)
+  for_each                  = { for rule in var.vnet_peer_ids : rule.name => rule }
+  name                      = each.value.name
   resource_group_name       = data.azurerm_resource_group.vnet.name
   virtual_network_name      = azurerm_virtual_network.vnet.name
-  remote_virtual_network_id = var.vnet_peer_ids[count.index]
+  remote_virtual_network_id = each.value.vnet_id
 }

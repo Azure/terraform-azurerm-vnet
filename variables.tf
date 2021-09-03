@@ -81,8 +81,26 @@ variable "vnet_location" {
   default     = null
 }
 
-variable "vnet_peer_ids"{
+# variable "vnet_peer_ids"{
+#   description = "A list of Azure resource IDs of the remote virtual network. Changing this forces a new resource to be created"
+#   type        = list(string)
+#   default     = []
+# }
+
+variable "vnet_peer_ids" {
+  type        = list(map(string))
   description = "A list of Azure resource IDs of the remote virtual network. Changing this forces a new resource to be created"
-  type        = list(string)
-  default     = []
+
+  # Example:
+
+  # [
+  #   {
+  #     name = "foo2baz"
+  #     vnet_id = azurerm_virtual_network.vnet1.id
+  #   },
+  #   {
+  #     name = "foo2bar"
+  #     vnet_id = azurerm_virtual_network.vnet2.id
+  #   }
+  # ]
 }
