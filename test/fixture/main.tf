@@ -44,7 +44,20 @@ module "hub_vnet" {
   subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   subnet_names        = ["subnet1", "subnet2", "subnet3"]
   vnet_location       = var.vnet_location
+<<<<<<< HEAD
   vnet_peer_ids       = [azurerm_virtual_network.hub_vnet.id, azurerm_virtual_network.spoke_vnet.id]
+=======
+  vnet_peer_ids       = [
+    {
+      name = "foo2baz"
+      vnet_id = azurerm_virtual_network.vnet1.id
+    },
+    {
+      name = "foo2bar"
+      vnet_id = azurerm_virtual_network.vnet2.id
+    }
+  ]
+>>>>>>> b403ae351ba79e74da188d5b8bb68abf0219d596
 
   nsg_ids = {
     subnet1 = azurerm_network_security_group.nsg1.id

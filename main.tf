@@ -48,4 +48,8 @@ resource "azurerm_virtual_network_peering" "vnet_peering" {
   resource_group_name       = data.azurerm_resource_group.vnet.name
   virtual_network_name      = azurerm_virtual_network.vnet.name
   remote_virtual_network_id = each.value.vnet_id
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b403ae351ba79e74da188d5b8bb68abf0219d596
