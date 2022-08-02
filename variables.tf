@@ -86,3 +86,14 @@ variable "vnet_location" {
   type        = string
   default     = null
 }
+
+variable "ddos_protection_plan" {
+  description = "The set of DDos protection plan configuration"
+  type = set(object(
+    {
+      enable = bool
+      id     = string
+    }
+  ))
+  default = []
+}
