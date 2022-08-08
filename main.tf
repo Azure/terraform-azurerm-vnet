@@ -10,6 +10,15 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = var.address_space
   dns_servers         = var.dns_servers
   tags                = var.tags
+
+  dynamic "ddos_protection_plan" {
+    for_each = var.ddos_protection_plan != null ? [var.ddos_protection_plan] : []
+
+    content {
+      enable = ddos_protection_plan.value.enable
+      id     = ddos_protection_plan.value.id
+    }
+  }
 }
 
 resource "azurerm_subnet" "subnet" {
