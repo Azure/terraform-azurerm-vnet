@@ -1,12 +1,18 @@
 # terraform-azurerm-vnet
 
-[![Build Status](https://travis-ci.org/Azure/terraform-azurerm-vnet.svg?branch=master)](https://travis-ci.org/Azure/terraform-azurerm-vnet)
-
 ## Create a basic virtual network in Azure
 
 This Terraform module deploys a Virtual Network in Azure with a subnet or a set of subnets passed in as input parameters.
 
 The module does not create nor expose a security group. This would need to be defined separately as additional security rules on subnets in the deployed network.
+
+## Notice on Upgrade to V3.x
+
+We've added a CI pipeline for this module to speed up our code review and to enforce a high code quality standard, if you want to contribute by submitting a pull request, please read [Pre-Commit & Pr-Check & Test](#Pre-Commit--Pr-Check--Test) section, or your pull request might be rejected by CI pipeline.
+
+A pull request will be reviewed when it has passed Pre Pull Request Check in the pipeline, and will be merged when it has passed the acceptance tests. Once the ci Pipeline failed, please read the pipeline's output, thanks for your cooperation.
+
+The module's code is the same except we've sorted blocks and assignments to meet our new requirement in the CI pipeline. It should be safe to upgrade the module's version to v3.0.0 but we **STRONGLY RECOMMEND YOU TO CHECK TFPLAN FILE CAREFULLY BEFORE YOU APPLY!**
 
 ## Usage in Terraform 0.13
 
@@ -225,75 +231,92 @@ module "vnet" {
 }
 ```
 
-## Test
+## Pre-Commit & Pr-Check & Test
 
 ### Configurations
 
 - [Configure Terraform for Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/terraform-install-configure)
 
-We provide 2 ways to build, run, and test the module on a local development machine.  [Native (Mac/Linux)](#native-maclinux) or [Docker](#docker).
+We assumed that you have setup service principal's credentials in your environment variables like below:
 
-### Native (Mac/Linux)
-
-#### Prerequisites
-
-- [Ruby **(~> 2.3)**](https://www.ruby-lang.org/en/downloads/)
-- [Bundler **(~> 1.15)**](https://bundler.io/)
-- [Terraform **(~> 0.11.7)**](https://www.terraform.io/downloads.html)
-- [Golang **(~> 1.10.3)**](https://golang.org/dl/)
-
-#### Environment setup
-
-We provide simple script to quickly set up module development environment:
-
-```sh
-$ curl -sSL https://raw.githubusercontent.com/Azure/terramodtest/master/tool/env_setup.sh | sudo bash
+```shell
+export ARM_SUBSCRIPTION_ID="<azure_subscription_id>"
+export ARM_TENANT_ID="<azure_subscription_tenant_id>"
+export ARM_CLIENT_ID="<service_principal_appid>"
+export ARM_CLIENT_SECRET="<service_principal_password>"
 ```
 
-#### Run test
+On Windows Powershell:
 
-Then simply run it in local shell:
-
-```sh
-$ cd $GOPATH/src/{directory_name}/
-$ bundle install
-$ rake build
-$ rake full
+```shell
+$env:ARM_SUBSCRIPTION_ID="<azure_subscription_id>"
+$env:ARM_TENANT_ID="<azure_subscription_tenant_id>"
+$env:ARM_CLIENT_ID="<service_principal_appid>"
+$env:ARM_CLIENT_SECRET="<service_principal_password>"
 ```
 
-### Docker
+We provide a docker image to run the pre-commit checks and tests for you: `mcr.microsoft.com/azterraform:latest`
 
-We provide a Dockerfile to build a new image based `FROM` the `microsoft/terraform-test` Docker hub image which adds additional tools / packages specific for this module (see Custom Image section).  Alternatively use only the `microsoft/terraform-test` Docker hub image [by using these instructions](https://github.com/Azure/terraform-test).
+To run the pre-commit task, we can run the following command:
+
+```shell
+$ docker run --rm -v $(pwd):/src -w /src mcr.microsoft.com/azterraform:latest make pre-commit
+```
+
+On Windows Powershell:
+
+```shell
+$ docker run --rm -v ${pwd}:/src -w /src mcr.microsoft.com/azterraform:latest make pre-commit
+```
+
+In pre-commit task, we will:
+
+1. Run `terraform fmt -recursive` command for your Terraform code.
+2. Run `terrafmt fmt -f` command for markdown files and go code files to ensure that the Terraform code embedded in these files are well formatted.
+3. Run `go mod tidy` and `go mod vendor` for test folder to ensure that all the dependencies have been synced.
+4. Run `gofmt` for all go code files.
+5. Run `gofumpt` for all go code files.
+6. Run `terraform-docs` on `README.md` file, then run `markdown-table-formatter` to format markdown tables in `README.md`.
+
+Then we can run the pr-check task to check whether our code meets our pipeline's requirement(We strongly recommend you run the following command before you commit):
+
+```shell
+$ docker run --rm -v $(pwd):/src -w /src mcr.microsoft.com/azterraform:latest make pr-check
+```
+
+On Windows Powershell:
+
+```shell
+$ docker run --rm -v ${pwd}:/src -w /src mcr.microsoft.com/azterraform:latest make pr-check
+```
+
+To run the e2e-test, we can run the following command:
+
+```text
+docker run --rm -v $(pwd):/src -w /src -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET mcr.microsoft.com/azterraform:latest make e2e-test
+```
+
+On Windows Powershell:
+
+```text
+docker run --rm -v ${pwd}:/src -w /src -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET mcr.microsoft.com/azterraform:latest make e2e-test
+```
+
+To follow [**Ensure AKS uses disk encryption set**](https://docs.bridgecrew.io/docs/ensure-that-aks-uses-disk-encryption-set) policy we've used `azurerm_key_vault` in example codes, and to follow [**Key vault does not allow firewall rules settings**](https://docs.bridgecrew.io/docs/ensure-that-key-vault-allows-firewall-rules-settings) we've limited the ip cidr on it's `network_acls`. On default we'll use the ip return by `https://api.ipify.org?format=json` api as your public ip, but in case you need use other cidr, you can assign on by passing an environment variable:
+
+```text
+docker run --rm -v $(pwd):/src -w /src -e TF_VAR_key_vault_firewall_bypass_ip_cidr="<your_cidr>" -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET mcr.microsoft.com/azterraform:latest make e2e-test
+```
+
+On Windows Powershell:
+
+```text
+docker run --rm -v ${pwd}:/src -w /src -e TF_VAR_key_vault_firewall_bypass_ip_cidr="<your_cidr>" -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET mcr.microsoft.com/azterraform:latest make e2e-test
+```
 
 #### Prerequisites
 
 - [Docker](https://www.docker.com/community-edition#/download)
-
-#### Custom Image
-
-This builds the custom image:
-
-```sh
-$ docker build --build-arg BUILD_ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID --build-arg BUILD_ARM_CLIENT_ID=$ARM_CLIENT_ID --build-arg BUILD_ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET --build-arg BUILD_ARM_TENANT_ID=$ARM_TENANT_ID -t azure-vnet .
-```
-
-This runs the build and unit tests:
-
-```sh
-$ docker run --rm azure-vnet /bin/bash -c "bundle install && rake build"
-```
-
-This runs the end to end tests:
-
-```sh
-$ docker run --rm azure-vnet /bin/bash -c "bundle install && rake e2e"
-```
-
-This runs the full tests:
-
-```sh
-$ docker run --rm azure-vnet /bin/bash -c "bundle install && rake full"
-```
 
 ## Authors
 
@@ -333,22 +356,23 @@ No modules.
 
 ## Inputs
 
-| Name                                                                                                                                                                                                          | Description                                                                                  | Type            | Default                                                          | Required |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-----------------|------------------------------------------------------------------|:--------:|
-| <a name="input_address_space"></a> [address\_space](#input\_address\_space)                                                                                                                                   | The address space that is used by the virtual network.                                       | `list(string)`  | <pre>[<br>  "10.0.0.0/16"<br>]</pre>                             |    no    |
-| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers)                                                                                                                                         | The DNS servers to be used with vNet. If no values specified, this defaults to Azure DNS.    | `list(string)`  | `[]`                                                             |    no    |
-| <a name="input_nsg_ids"></a> [nsg\_ids](#input\_nsg\_ids)                                                                                                                                                     | A map of subnet name to Network Security Group IDs                                           | `map(string)`   | `{}`                                                             |    no    |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)                                                                                                               | Name of the resource group to be imported.                                                   | `string`        | n/a                                                              |   yes    |
-| <a name="input_route_tables_ids"></a> [route\_tables\_ids](#input\_route\_tables\_ids)                                                                                                                        | A map of subnet name to Route table ids                                                      | `map(string)`   | `{}`                                                             |    no    |
-| <a name="input_subnet_delegation"></a> [subnet\_delegation](#input\_subnet\_delegation)                                                                                                                       | A map of subnet name to delegation block on the subnet                                       | `map(map(any))` | `{}`                                                             |    no    |
-| <a name="input_subnet_enforce_private_link_endpoint_network_policies"></a> [subnet\_enforce\_private\_link\_endpoint\_network\_policies](#input\_subnet\_enforce\_private\_link\_endpoint\_network\_policies) | A map of subnet name to enable/disable private link endpoint network policies on the subnet. | `map(bool)`     | `{}`                                                             |    no    |
-| <a name="input_subnet_enforce_private_link_service_network_policies"></a> [subnet\_enforce\_private\_link\_service\_network\_policies](#input\_subnet\_enforce\_private\_link\_service\_network\_policies)    | A map of subnet name to enable/disable private link service network policies on the subnet.  | `map(bool)`     | `{}`                                                             |    no    |
-| <a name="input_subnet_names"></a> [subnet\_names](#input\_subnet\_names)                                                                                                                                      | A list of public subnets inside the vNet.                                                    | `list(string)`  | <pre>[<br>  "subnet1",<br>  "subnet2",<br>  "subnet3"<br>]</pre> |    no    |
-| <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes)                                                                                                                             | The address prefix to use for the subnet.                                                    | `list(string)`  | <pre>[<br>  "10.0.1.0/24"<br>]</pre>                             |    no    |
-| <a name="input_subnet_service_endpoints"></a> [subnet\_service\_endpoints](#input\_subnet\_service\_endpoints)                                                                                                | A map of subnet name to service endpoints to add to the subnet.                              | `map(any)`      | `{}`                                                             |    no    |
-| <a name="input_tags"></a> [tags](#input\_tags)                                                                                                                                                                | The tags to associate with your network and subnets.                                         | `map(string)`   | <pre>{<br>  "ENV": "test"<br>}</pre>                             |    no    |
-| <a name="input_vnet_location"></a> [vnet\_location](#input\_vnet\_location)                                                                                                                                   | The location of the vnet to create. Defaults to the location of the resource group.          | `string`        | `null`                                                           |    no    |
-| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name)                                                                                                                                               | Name of the vnet to create                                                                   | `string`        | `"acctvnet"`                                                     |    no    |
+| Name                                                                                                                                                                                                          | Description                                                                                  | Type                                                                    | Default                                                          | Required |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|------------------------------------------------------------------|:--------:|
+| <a name="input_address_space"></a> [address\_space](#input\_address\_space)                                                                                                                                   | The address space that is used by the virtual network.                                       | `list(string)`                                                          | <pre>[<br>  "10.0.0.0/16"<br>]</pre>                             |    no    |
+| <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan)                                                                                                            | The set of DDoS protection plan configuration                                                | <pre>object({<br>    enable = bool<br>    id     = string<br>  })</pre> | `null`                                                           |    no    |
+| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers)                                                                                                                                         | The DNS servers to be used with vNet. If no values specified, this defaults to Azure DNS.    | `list(string)`                                                          | `[]`                                                             |    no    |
+| <a name="input_nsg_ids"></a> [nsg\_ids](#input\_nsg\_ids)                                                                                                                                                     | A map of subnet name to Network Security Group IDs                                           | `map(string)`                                                           | `{}`                                                             |    no    |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)                                                                                                               | Name of the resource group to be imported.                                                   | `string`                                                                | n/a                                                              |   yes    |
+| <a name="input_route_tables_ids"></a> [route\_tables\_ids](#input\_route\_tables\_ids)                                                                                                                        | A map of subnet name to Route table ids                                                      | `map(string)`                                                           | `{}`                                                             |    no    |
+| <a name="input_subnet_delegation"></a> [subnet\_delegation](#input\_subnet\_delegation)                                                                                                                       | A map of subnet name to delegation block on the subnet                                       | `map(map(any))`                                                         | `{}`                                                             |    no    |
+| <a name="input_subnet_enforce_private_link_endpoint_network_policies"></a> [subnet\_enforce\_private\_link\_endpoint\_network\_policies](#input\_subnet\_enforce\_private\_link\_endpoint\_network\_policies) | A map of subnet name to enable/disable private link endpoint network policies on the subnet. | `map(bool)`                                                             | `{}`                                                             |    no    |
+| <a name="input_subnet_enforce_private_link_service_network_policies"></a> [subnet\_enforce\_private\_link\_service\_network\_policies](#input\_subnet\_enforce\_private\_link\_service\_network\_policies)    | A map of subnet name to enable/disable private link service network policies on the subnet.  | `map(bool)`                                                             | `{}`                                                             |    no    |
+| <a name="input_subnet_names"></a> [subnet\_names](#input\_subnet\_names)                                                                                                                                      | A list of public subnets inside the vNet.                                                    | `list(string)`                                                          | <pre>[<br>  "subnet1",<br>  "subnet2",<br>  "subnet3"<br>]</pre> |    no    |
+| <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes)                                                                                                                             | The address prefix to use for the subnet.                                                    | `list(string)`                                                          | <pre>[<br>  "10.0.1.0/24"<br>]</pre>                             |    no    |
+| <a name="input_subnet_service_endpoints"></a> [subnet\_service\_endpoints](#input\_subnet\_service\_endpoints)                                                                                                | A map of subnet name to service endpoints to add to the subnet.                              | `map(any)`                                                              | `{}`                                                             |    no    |
+| <a name="input_tags"></a> [tags](#input\_tags)                                                                                                                                                                | The tags to associate with your network and subnets.                                         | `map(string)`                                                           | <pre>{<br>  "ENV": "test"<br>}</pre>                             |    no    |
+| <a name="input_vnet_location"></a> [vnet\_location](#input\_vnet\_location)                                                                                                                                   | The location of the vnet to create. Defaults to the location of the resource group.          | `string`                                                                | `null`                                                           |    no    |
+| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name)                                                                                                                                               | Name of the vnet to create                                                                   | `string`                                                                | `"acctvnet"`                                                     |    no    |
 
 ## Outputs
 

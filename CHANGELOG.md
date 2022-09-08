@@ -1,8 +1,14 @@
-# 2.7.0 (August 8, 2022)
+# 3.0.0 (Sep 5, 2022)
+
+The goal of v3.0.0 is to add a GitHub Action-based CI pipeline and introduce modern acceptance tests to ensure that future pull requests to this module meet our new standard for AzureRM modules.
+
+The module's code is the same except we've sorted blocks and assignments to meet our new requirement in the CI pipeline.
+
+We also upgrade the requirements of Terraform Core and AzureRM provider.
 
 ENHANCEMENTS:
 
-* Accept the standard Microsoft SECURITY.MD file to help the community understand the security policy and how to safely report security issues. [#64](https://github.com/Azure/terraform-azurerm-vnet/pull/64)
-* Modify vnet's ddos protection plan to be configurable. [#66](https://github.com/Azure/terraform-azurerm-vnet/pull/66)
+Now Terraform's version constraint is `>=1.2` since 1.2 has introduced some [new features](https://github.com/hashicorp/terraform/blob/v1.2/CHANGELOG.md) that can improve module's code quality.
+Now AzureRM provider's version constraint is `~> 3.0` since v2.x is no longer maintained.
 
 BUG FIXES:
