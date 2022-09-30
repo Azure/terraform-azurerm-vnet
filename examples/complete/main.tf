@@ -1,26 +1,22 @@
-provider "azurerm" {
-  features {}
-}
-
 resource "random_id" "rg_name" {
   byte_length = 8
 }
 
 resource "azurerm_resource_group" "test" {
-  name     = "test-${random_id.rg_name.hex}-rg"
   location = var.location
+  name     = "test-${random_id.rg_name.hex}-rg"
 }
 
 resource "azurerm_network_security_group" "nsg1" {
+  location            = var.vnet_location
   name                = "test-${random_id.rg_name.hex}-nsg"
   resource_group_name = azurerm_resource_group.test.name
-  location            = var.vnet_location
 }
 
 resource "azurerm_route_table" "rt1" {
+  location            = var.vnet_location
   name                = "test-${random_id.rg_name.hex}-rt"
   resource_group_name = azurerm_resource_group.test.name
-  location            = var.vnet_location
 }
 
 module "vnet" {
