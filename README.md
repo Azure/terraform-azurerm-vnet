@@ -244,7 +244,7 @@ We provide 2 ways to build, run, and test the module on a local development mach
 
 #### Environment setup
 
-We provide simple script to quickly set up module development environment:
+We provide simple script to quickly set up module development environment :
 
 ```sh
 $ curl -sSL https://raw.githubusercontent.com/Azure/terramodtest/master/tool/env_setup.sh | sudo bash
