@@ -1,0 +1,20 @@
+name: Pre Pull Request Check
+on:
+  pull_request:
+    types: ['opened', 'synchronize']
+    paths:
+      - '.github/**'
+      - '**.go'
+      - '**.tf'
+      - '.github/workflows/**'
+      - '**.md'
+
+jobs:
+  prepr-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: pr-check
+        run: |
+         docker run --rm -v $(pwd):/src -w /src -e TFLINT_CONFIG=.tflint_alt.hcl -e SKIP_CHECKOV mcr.microsoft.com/azterraform:latest make pr-check
