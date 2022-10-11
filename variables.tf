@@ -3,6 +3,12 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "vnet_location" {
+  description = "The location of the vnet to create."
+  type        = string
+  nullable    = false
+}
+
 variable "address_space" {
   type        = list(string)
   description = "The address space that is used by the virtual network."
@@ -82,12 +88,6 @@ variable "tags" {
   default = {
     ENV = "test"
   }
-}
-
-variable "vnet_location" {
-  description = "The location of the vnet to create. Defaults to the location of the resource group."
-  type        = string
-  default     = null
 }
 
 variable "vnet_name" {
