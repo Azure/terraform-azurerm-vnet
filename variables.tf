@@ -1,6 +1,13 @@
 variable "resource_group_name" {
   description = "Name of the resource group to be imported."
   type        = string
+  nullable    = false
+}
+
+variable "vnet_location" {
+  description = "The location of the vnet to create."
+  type        = string
+  nullable    = false
 }
 
 variable "address_space" {
@@ -82,12 +89,6 @@ variable "tags" {
   default = {
     ENV = "test"
   }
-}
-
-variable "vnet_location" {
-  description = "The location of the vnet to create. Defaults to the location of the resource group."
-  type        = string
-  default     = null
 }
 
 variable "vnet_name" {

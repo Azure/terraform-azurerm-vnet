@@ -129,13 +129,12 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                                                                | Type        |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)                                                                     | resource    |
-| [azurerm_subnet_network_security_group_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource    |
-| [azurerm_subnet_route_table_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association)                       | resource    |
-| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network)                                                     | resource    |
-| [azurerm_resource_group.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group)                                                    | data source |
+| Name                                                                                                                                                                                | Type     |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)                                                                     | resource |
+| [azurerm_subnet_network_security_group_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
+| [azurerm_subnet_route_table_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association)                       | resource |
+| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network)                                                     | resource |
 
 ## Inputs
 
@@ -154,7 +153,7 @@ No modules.
 | <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes)                                                                                                                             | The address prefix to use for the subnet.                                                    | `list(string)`                                                          | <pre>[<br>  "10.0.1.0/24"<br>]</pre>                             |    no    |
 | <a name="input_subnet_service_endpoints"></a> [subnet\_service\_endpoints](#input\_subnet\_service\_endpoints)                                                                                                | A map of subnet name to service endpoints to add to the subnet.                              | `map(any)`                                                              | `{}`                                                             |    no    |
 | <a name="input_tags"></a> [tags](#input\_tags)                                                                                                                                                                | The tags to associate with your network and subnets.                                         | `map(string)`                                                           | <pre>{<br>  "ENV": "test"<br>}</pre>                             |    no    |
-| <a name="input_vnet_location"></a> [vnet\_location](#input\_vnet\_location)                                                                                                                                   | The location of the vnet to create. Defaults to the location of the resource group.          | `string`                                                                | `null`                                                           |    no    |
+| <a name="input_vnet_location"></a> [vnet\_location](#input\_vnet\_location)                                                                                                                                   | The location of the vnet to create.                                                          | `string`                                                                | n/a                                                              |   yes    |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name)                                                                                                                                               | Name of the vnet to create                                                                   | `string`                                                                | `"acctvnet"`                                                     |    no    |
 
 ## Outputs
