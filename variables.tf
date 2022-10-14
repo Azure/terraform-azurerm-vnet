@@ -73,7 +73,7 @@ variable "subnet_names" {
 variable "subnet_prefixes" {
   description = "The address prefix to use for the subnet."
   type        = list(string)
-  default     = ["10.0.1.0/24"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "subnet_service_endpoints" {
