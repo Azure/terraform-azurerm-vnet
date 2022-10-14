@@ -11,6 +11,7 @@ import (
 
 func TestExamples(t *testing.T) {
 	examples := []string{
+		"examples/all_default",
 		"examples/complete",
 		"examples/new_route",
 		"examples/new_security_rule",
