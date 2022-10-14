@@ -16,7 +16,11 @@ V3.0.0 is a major version upgrade. Extreme caution must be taken during the upgr
 
 Running the `terraform plan` first to inspect the plan is strongly advised.
 
-We kept most code untouched, and only added a new output in v3.0.0.
+We kept most code untouched, but the following **breaking changes** might affect your stack:
+
+* `var.vnet_location` now is required. [#72](https://github.com/Azure/terraform-azurerm-vnet/pull/72)
+* `var.resource_group_name` now cannot be set to `null`. [#72](https://github.com/Azure/terraform-azurerm-vnet/pull/72)
+* `var.subnet_prefixes`'s default value now is `["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]`. [#73](https://github.com/Azure/terraform-azurerm-vnet/pull/73)
 
 ### Terraform and terraform-provider-azurerm version restrictions
 
