@@ -27,3 +27,8 @@ output "vnet_subnets_name_id" {
   description = "Can be queried subnet-id by subnet name by using lookup(module.vnet.vnet_subnets_name_id, subnet1)"
   value       = local.azurerm_subnets
 }
+
+output "address_prefixes" {
+  description = "The address prefixes to use for the subnet."
+  value       =  azurerm_subnet.subnet.*.address_prefixes
+}
