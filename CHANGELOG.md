@@ -1,4 +1,4 @@
-# 3.0.0 (Oct 8th, 2022)
+# 3.0.0 (Oct 18th, 2022)
 
 ENHANCEMENTS:
 
