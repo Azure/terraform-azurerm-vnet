@@ -1,0 +1,35 @@
+name: 'Comment on PR'
+
+on:
+  workflow_run:
+    workflows: ["Pre Pull Request Check"]
+    types:
+      - completed
+
+jobs:
+  comment:
+    name: 'breaking change detect'
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
+    steps:
+      - name: 'Download change artifact'
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow: pr-check.yaml
+          name: change
+      - name: Check change existence
+        id: check_change
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "change"
+      - name: 'Restore preserved ENV'
+        if: steps.check_change.outputs.files_exists == 'true'
+        run: cat change >> "${GITHUB_ENV}"
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: steps.check_change.outputs.files_exists == 'true'
+        with:
+          number: ${{ env.PR_NUMBER }}
+          message: |
+              ${{ env.CHANGE }}

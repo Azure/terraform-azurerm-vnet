@@ -17,18 +17,27 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - uses: jwalton/gh-find-current-pr@v1
-        id: PR
-        with:
-          state: open
       - name: pr-check
         run: |
           docker run --rm -v $(pwd):/src -w /src -e SKIP_CHECKOV -e TFLINT_CONFIG=.tflint_alt.hcl mcr.microsoft.com/azterraform:latest make pr-check
       - name: Breaking Change Brief
         run: |
-          change=$(docker run --rm -t -v $(pwd):/src -w /src mcr.microsoft.com/azterraform:latest breaking_detect /src ${{ github.repository_owner }} ${{ github.event.repository.name }} ${{ github.base_ref }})
-          if [ ! -z "$change" ]; then
-            msg=$(printf "Potential Breaking Changes in ${{ github.event.pull_request.head.sha }}:\n${change}")
-            jq -n --arg msg "$msg" '{body: $msg}' > body.txt
-            curl -s -X POST -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues/${{ steps.PR.outputs.pr }}/comments -d @body.txt
+          c=$(docker run --rm -t -v $(pwd):/src -w /src mcr.microsoft.com/azterraform:latest breaking_detect /src ${{ github.repository_owner }} ${{ github.event.repository.name }} ${{ github.base_ref }})
+          if [ ! -z "$c" ]; then
+            msg=$(printf "Potential Breaking Changes in ${{ github.event.pull_request.head.sha }}:\n${c}")
+            content=$(jq -n --arg msg "$msg" '{body: $msg}')
+            echo "PR_NUMBER=${{ github.event.pull_request.number }}"    >> change
+            echo "CHANGE=${content}"      >> change
           fi
+      - name: Check change existence
+        id: check_change
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "change"
+      - name: 'Upload breaking change warning'
+        if: steps.check_change.outputs.files_exists == 'true'
+        uses: actions/upload-artifact@v2
+        with:
+          name: change
+          path: change
+          retention-days: 1
