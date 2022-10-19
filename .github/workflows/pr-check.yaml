@@ -25,9 +25,7 @@ jobs:
           c=$(docker run --rm -t -v $(pwd):/src -w /src mcr.microsoft.com/azterraform:latest breaking_detect /src ${{ github.repository_owner }} ${{ github.event.repository.name }} ${{ github.base_ref }})
           if [ ! -z "$c" ]; then
             msg=$(printf "Potential Breaking Changes in ${{ github.event.pull_request.head.sha }}:\n${c}")
-            content=$(jq -n --arg msg "$msg" '{body: $msg}')
-            echo "PR_NUMBER=${{ github.event.pull_request.number }}"    >> change
-            echo "CHANGE=${content}"      >> change
+            jq -n --arg msg "$msg" '{pr: ${{ github.event.pull_request.number }}, body: $msg}' > change
           fi
       - name: Check change existence
         id: check_change
@@ -38,6 +36,6 @@ jobs:
         if: steps.check_change.outputs.files_exists == 'true'
         uses: actions/upload-artifact@v2
         with:
+          retention-days: 1
           name: change
           path: change
-          retention-days: 1

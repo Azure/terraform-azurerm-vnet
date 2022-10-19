@@ -26,10 +26,12 @@ jobs:
           files: "change"
       - name: 'Restore preserved ENV'
         if: steps.check_change.outputs.files_exists == 'true'
-        run: cat change >> "${GITHUB_ENV}"
+        run: |
+          export PR_NUMBER=$(cat change | jq -r '.pr')
+          export CHANGE=$(cat change | jq -r '.body')
       - uses: marocchino/sticky-pull-request-comment@v2
         if: steps.check_change.outputs.files_exists == 'true'
         with:
           number: ${{ env.PR_NUMBER }}
           message: |
-              ${{ env.CHANGE }}
+            ${{ env.CHANGE }}
