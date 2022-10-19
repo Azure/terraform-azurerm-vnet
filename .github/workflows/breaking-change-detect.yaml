@@ -24,8 +24,7 @@ jobs:
         uses: andstor/file-existence-action@v1
         with:
           files: "change"
-      - name: 'Restore preserved ENV'
-        id: env
+      - name: 'Comment on PR'
         if: steps.check_change.outputs.files_exists == 'true'
         run: |
           export PR_NUMBER=$(cat change | jq -r '.pr')
