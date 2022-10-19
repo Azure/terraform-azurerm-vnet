@@ -87,7 +87,7 @@ variable "tags" {
   type        = map(string)
 
   default = {
-    ENV = "test"
+    ENV = "test2"
   }
 }
 
