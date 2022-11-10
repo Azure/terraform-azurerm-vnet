@@ -21,11 +21,7 @@ jobs:
       - name: update-changelog
         if: steps.PR.outputs.number != ''
         run: |
-          docker run --rm -v $(pwd):/src -w /src \ 
-          githubchangeloggenerator/github-changelog-generator \
-          -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} \
-          -t ${{ secrets.GITHUB_TOKEN }} --no-issues --no-compare-link \
-          --since-tag ${{ steps.previoustag.outputs.tag }}
+          docker run --rm -v $(pwd):/src -w /src githubchangeloggenerator/github-changelog-generator -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} -t ${{ secrets.GITHUB_TOKEN }} --no-issues --no-compare-link --since-tag ${{ steps.previoustag.outputs.tag }}
           
           git commit -m "update changelog"
           git push
