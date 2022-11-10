@@ -1,0 +1,31 @@
+name: Update Changelog
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - uses: 8BitJonny/gh-get-current-pr@2.1.0
+        id: PR
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 0.0.0
+      - name: update-changelog
+        if: steps.PR.outputs.number != ''
+        run: |
+          docker run --rm -v $(pwd):/src -w /src \ 
+          githubchangeloggenerator/github-changelog-generator \
+          -u ${{ github.repository_owner }} -p ${{ github.event.repository.name }} \
+          -t ${{ secrets.GITHUB_TOKEN }} --no-issues --no-compare-link \
+          --since-tag ${{ steps.previoustag.outputs.tag }}
+          
+          git commit -m "update changelog"
+          git push
