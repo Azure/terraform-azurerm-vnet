@@ -12,7 +12,7 @@ on:
 
 jobs:
   acc-tests:
-    runs-on: [self-hosted, 1ES.Pool=aztfmod-terraform-azurerm-vnet]
+    runs-on: [self-hosted, 1ES.Pool=terraform-azurerm-vnet]
     environment:
       name: acctests
     steps:
