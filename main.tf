@@ -3,6 +3,7 @@ resource "azurerm_virtual_network" "vnet" {
   location            = var.vnet_location
   name                = var.vnet_name
   resource_group_name = var.resource_group_name
+  bgp_community       = var.bgp_community
   dns_servers         = var.dns_servers
   tags                = var.tags
 
