@@ -16,6 +16,12 @@ variable "address_space" {
   default     = ["10.0.0.0/16"]
 }
 
+variable "bgp_community" {
+  type        = string
+  description = "(Optional) The BGP community attribute in format `<as-number>:<community-value>`."
+  default     = null
+}
+
 variable "ddos_protection_plan" {
   description = "The set of DDoS protection plan configuration"
   type = object({
