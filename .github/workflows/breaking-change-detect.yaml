@@ -13,20 +13,20 @@ jobs:
     if: ${{ github.event.workflow_run.event == 'pull_request' }}
     steps:
       - name: 'Download change artifact'
-        id: download_change
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: "${{ secrets.GITHUB_TOKEN }}"
           run_id: ${{ github.event.workflow_run.id }}
           workflow: pr-check.yaml
           name: change
+          if_no_artifact_found: ignore
       - name: Check change existence
         id: check_change
         uses: andstor/file-existence-action@v1
         with:
           files: "change"
       - name: 'Comment on PR'
-        if: steps.download_change.outputs.files_exists == 'true' && steps.check_change.outputs.files_exists == 'true'
+        if: steps.check_change.outputs.files_exists == 'true'
         run: |
           export PR_NUMBER=$(cat change | jq -r '.pr')
           msg=$(cat change | jq -r '.body')
