@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- Ci updating breaking-change-detect [\#90](https://github.com/Azure/terraform-azurerm-vnet/pull/90) ([Pumpkin-3906](https://github.com/Pumpkin-3906))
 - Upgrade `terraform-module-test-helper` lib so we can get rid of override file to execute version upgrade test [\#89](https://github.com/Azure/terraform-azurerm-vnet/pull/89) ([lonegunmanb](https://github.com/lonegunmanb))
 - Add support for `bgp_community` [\#88](https://github.com/Azure/terraform-azurerm-vnet/pull/88) ([lonegunmanb](https://github.com/lonegunmanb))
 - update outputs.tf to bracket syntax [\#86](https://github.com/Azure/terraform-azurerm-vnet/pull/86) ([Pumpkin-3906](https://github.com/Pumpkin-3906))
