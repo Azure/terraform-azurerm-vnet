@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Azure/terraform-azurerm-vnet/tree/HEAD)
+
+**Merged pull requests:**
+
+- Add new variable `use_for_each` so we can use `for_each` to create multiple resource instances. [\#92](https://github.com/Azure/terraform-azurerm-vnet/pull/92) ([lonegunmanb](https://github.com/lonegunmanb))
+
 ## [3.1.0](https://github.com/Azure/terraform-azurerm-vnet/tree/3.1.0) (2022-12-07)
 
 **Merged pull requests:**
