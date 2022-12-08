@@ -16,7 +16,6 @@ This module contains resources with `count` meta-argument, but if we change `cou
 
 This module replicated a new `azurerm_subnet` which used `for_each`, and we provide a new toggle variable named `use_for_each`, this toggle is a switcher between `count` set and `for_each` set. Now user can set `var.use_for_each` to `true` to use `for_each`, and users who're maintaining existing resources could keep this toggle `false` to avoid potential breaking change. If you'd like to make changes to subnet resource, make sure that you've change both `resource` blocks. Thanks for your cooperation.
 
-
 ## Notice on Upgrade to V3.x
 
 We've added a CI pipeline for this module to speed up our code review and to enforce a high code quality standard, if you want to contribute by submitting a pull request, please read [Pre-Commit & Pr-Check & Test](#Pre-Commit--Pr-Check--Test) section, or your pull request might be rejected by CI pipeline.
