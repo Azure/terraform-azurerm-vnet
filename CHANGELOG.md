@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Azure/terraform-azurerm-vnet/tree/HEAD)
+## [3.2.0](https://github.com/Azure/terraform-azurerm-vnet/tree/3.2.0) (2022-12-08)
 
 **Merged pull requests:**
 
