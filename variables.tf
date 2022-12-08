@@ -4,6 +4,12 @@ variable "resource_group_name" {
   nullable    = false
 }
 
+variable "use_for_each" {
+  description = "Use `for_each` instead of `count` to create multiple resource instances."
+  type        = bool
+  nullable    = false
+}
+
 variable "vnet_location" {
   description = "The location of the vnet to create."
   type        = string
@@ -95,13 +101,6 @@ variable "tags" {
   default = {
     ENV = "test"
   }
-}
-
-variable "use_for_each" {
-  description = "Use `for_each` instead of `count` to create multiple resource instances."
-  type        = bool
-  default     = false
-  nullable    = false
 }
 
 variable "vnet_name" {
