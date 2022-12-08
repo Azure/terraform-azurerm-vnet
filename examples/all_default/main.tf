@@ -10,5 +10,6 @@ resource "azurerm_resource_group" "example" {
 module "vnet" {
   source              = "../../"
   resource_group_name = azurerm_resource_group.example.name
+  use_for_each        = var.use_for_each
   vnet_location       = var.vnet_location
 }

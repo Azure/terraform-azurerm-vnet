@@ -6,6 +6,16 @@ This Terraform module deploys a Virtual Network in Azure with a subnet or a set 
 
 The module does not create nor expose a security group. This would need to be defined separately as additional security rules on subnets in the deployed network.
 
+## Notice to contributor
+
+Thanks for your contribution! This module was created before Terraform introduce `for_each`, and according to the [document](https://developer.hashicorp.com/terraform/language/meta-arguments/count#when-to-use-for_each-instead-of-count):
+
+>If your instances are almost identical, `count` is appropriate. If some of their arguments need distinct values that can't be directly derived from an integer, it's safer to use `for_each`.
+
+This module contains resources with `count` meta-argument, but if we change `count` to `for_each` directly, it would require heavily manually state move operations with extremely caution, or the users who are maintaining existing infrastructure would face potential breaking change.  
+
+This module replicated a new `azurerm_subnet` which used `for_each`, and we provide a new toggle variable named `use_for_each`, this toggle is a switcher between `count` set and `for_each` set. Now user can set `var.use_for_each` to `true` to use `for_each`, and users who're maintaining existing resources could keep this toggle `false` to avoid potential breaking change. If you'd like to make changes to subnet resource, make sure that you've change both `resource` blocks. Thanks for your cooperation.
+
 ## Notice on Upgrade to V3.x
 
 We've added a CI pipeline for this module to speed up our code review and to enforce a high code quality standard, if you want to contribute by submitting a pull request, please read [Pre-Commit & Pr-Check & Test](#Pre-Commit--Pr-Check--Test) section, or your pull request might be rejected by CI pipeline.
@@ -135,7 +145,8 @@ No modules.
 
 | Name                                                                                                                                                                                | Type     |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)                                                                     | resource |
+| [azurerm_subnet.subnet_count](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)                                                               | resource |
+| [azurerm_subnet.subnet_for_each](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)                                                            | resource |
 | [azurerm_subnet_network_security_group_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_subnet_route_table_association.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association)                       | resource |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network)                                                     | resource |
@@ -158,6 +169,7 @@ No modules.
 | <a name="input_subnet_prefixes"></a> [subnet\_prefixes](#input\_subnet\_prefixes)                                                                                                                             | The address prefix to use for the subnet.                                                    | `list(string)`                                                          | <pre>[<br>  "10.0.1.0/24",<br>  "10.0.2.0/24",<br>  "10.0.3.0/24"<br>]</pre> |    no    |
 | <a name="input_subnet_service_endpoints"></a> [subnet\_service\_endpoints](#input\_subnet\_service\_endpoints)                                                                                                | A map of subnet name to service endpoints to add to the subnet.                              | `map(any)`                                                              | `{}`                                                                         |    no    |
 | <a name="input_tags"></a> [tags](#input\_tags)                                                                                                                                                                | The tags to associate with your network and subnets.                                         | `map(string)`                                                           | <pre>{<br>  "ENV": "test"<br>}</pre>                                         |    no    |
+| <a name="input_use_for_each"></a> [use\_for\_each](#input\_use\_for\_each)                                                                                                                                    | Use `for_each` instead of `count` to create multiple resource instances.                     | `bool`                                                                  | `false`                                                                      |    no    |
 | <a name="input_vnet_location"></a> [vnet\_location](#input\_vnet\_location)                                                                                                                                   | The location of the vnet to create.                                                          | `string`                                                                | n/a                                                                          |   yes    |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name)                                                                                                                                               | Name of the vnet to create                                                                   | `string`                                                                | `"acctvnet"`                                                                 |    no    |
 
