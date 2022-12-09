@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"fmt"
 	"regexp"
 	"testing"
 
@@ -19,15 +20,22 @@ func TestExamples(t *testing.T) {
 		"examples/private_link_service",
 	}
 	for _, example := range examples {
-		t.Run(example, func(t *testing.T) {
-			testExample(t, example)
+		t.Run(fmt.Sprintf("%s_for_each", example), func(t *testing.T) {
+			testExample(t, example, true)
+		})
+		t.Run(fmt.Sprintf("%s_count", example), func(t *testing.T) {
+			testExample(t, example, false)
 		})
 	}
 }
 
-func testExample(t *testing.T, exampleRelativePath string) {
+func testExample(t *testing.T, exampleRelativePath string, useForEach bool) {
+	vars := map[string]interface{}{
+		"use_for_each": useForEach,
+	}
 	test_helper.RunE2ETest(t, "../../", exampleRelativePath, terraform.Options{
 		Upgrade: true,
+		Vars:    vars,
 	}, func(t *testing.T, output test_helper.TerraformOutput) {
 		vnetId, ok := output["test_vnet_id"].(string)
 		assert.True(t, ok)
