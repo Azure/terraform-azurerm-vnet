@@ -1,6 +1,7 @@
 package upgrade
 
 import (
+	"fmt"
 	"testing"
 
 	test_helper "github.com/Azure/terraform-module-test-helper"
@@ -17,13 +18,16 @@ func TestExamples(t *testing.T) {
 		"examples/private_link_service",
 	}
 	for _, example := range examples {
-		t.Run(example, func(t *testing.T) {
-			testExample(t, example)
+		t.Run(fmt.Sprintf("%s_for_each", example), func(t *testing.T) {
+			testExample(t, example, true)
+		})
+		t.Run(fmt.Sprintf("%s_count", example), func(t *testing.T) {
+			testExample(t, example, false)
 		})
 	}
 }
 
-func testExample(t *testing.T, exampleRelativePath string) {
+func testExample(t *testing.T, exampleRelativePath string, useForEach bool) {
 	currentRoot, err := test_helper.GetCurrentModuleRootPath()
 	if err != nil {
 		t.FailNow()
@@ -32,7 +36,11 @@ func testExample(t *testing.T, exampleRelativePath string) {
 	if err != nil {
 		t.FailNow()
 	}
+	vars := map[string]interface{}{
+		"use_for_each": useForEach,
+	}
 	test_helper.ModuleUpgradeTest(t, "Azure", "terraform-azurerm-vnet", exampleRelativePath, currentRoot, terraform.Options{
 		Upgrade: true,
+		Vars:    vars,
 	}, currentMajorVersion)
 }
