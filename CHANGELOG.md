@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- Bump github.com/gruntwork-io/terratest from 0.41.6 to 0.41.7 in /test [\#94](https://github.com/Azure/terraform-azurerm-vnet/pull/94) ([dependabot[bot]](https://github.com/apps/dependabot))
 - make `var.use_for_each` a required variable [\#93](https://github.com/Azure/terraform-azurerm-vnet/pull/93) ([lonegunmanb](https://github.com/lonegunmanb))
 
 
