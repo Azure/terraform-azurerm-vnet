@@ -18,11 +18,12 @@ func TestExamples(t *testing.T) {
 		"examples/private_link_service",
 	}
 	for _, example := range examples {
-		t.Run(fmt.Sprintf("%s_for_each", example), func(t *testing.T) {
-			testExample(t, example, true)
+		e := example
+		t.Run(fmt.Sprintf("%s_for_each", e), func(t *testing.T) {
+			testExample(t, e, true)
 		})
-		t.Run(fmt.Sprintf("%s_count", example), func(t *testing.T) {
-			testExample(t, example, false)
+		t.Run(fmt.Sprintf("%s_count", e), func(t *testing.T) {
+			testExample(t, e, false)
 		})
 	}
 }
