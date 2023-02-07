@@ -5,6 +5,7 @@
 **Merged pull requests:**
 
 - Capture the iterator variable to avoid concurrent test error [\#100](https://github.com/Azure/terraform-azurerm-vnet/pull/100) ([lonegunmanb](https://github.com/lonegunmanb))
+- Bump github.com/Azure/terraform-module-test-helper from 0.7.1 to 0.8.1 in /test [\#98](https://github.com/Azure/terraform-azurerm-vnet/pull/98) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump github.com/Azure/terraform-module-test-helper from 0.6.0 to 0.7.1 in /test [\#97](https://github.com/Azure/terraform-azurerm-vnet/pull/97) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump github.com/gruntwork-io/terratest from 0.41.7 to 0.41.9 in /test [\#96](https://github.com/Azure/terraform-azurerm-vnet/pull/96) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump github.com/Azure/terraform-module-test-helper from 0.4.0 to 0.6.0 in /test [\#95](https://github.com/Azure/terraform-azurerm-vnet/pull/95) ([dependabot[bot]](https://github.com/apps/dependabot))
