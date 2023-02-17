@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- Bump github.com/hashicorp/go-getter/v2 from 2.1.1 to 2.2.0 in /test [\#102](https://github.com/Azure/terraform-azurerm-vnet/pull/102) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Capture the iterator variable to avoid concurrent test error [\#100](https://github.com/Azure/terraform-azurerm-vnet/pull/100) ([lonegunmanb](https://github.com/lonegunmanb))
 - Bump github.com/Azure/terraform-module-test-helper from 0.7.1 to 0.8.1 in /test [\#98](https://github.com/Azure/terraform-azurerm-vnet/pull/98) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump github.com/Azure/terraform-module-test-helper from 0.6.0 to 0.7.1 in /test [\#97](https://github.com/Azure/terraform-azurerm-vnet/pull/97) ([dependabot[bot]](https://github.com/apps/dependabot))
