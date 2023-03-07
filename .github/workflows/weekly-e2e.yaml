@@ -28,4 +28,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: 'Update TestVersionSnapshot'
           branch: ${{ env.default_branch }}
-          force: true
