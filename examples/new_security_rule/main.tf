@@ -41,12 +41,12 @@ resource "azurerm_network_security_group" "ssh" {
 
   security_rule {
     access                     = "Allow"
+    destination_address_prefix = "*"
+    destination_port_range     = "22"
     direction                  = "Inbound"
     name                       = "test123"
     priority                   = 100
     protocol                   = "Tcp"
-    destination_address_prefix = "*"
-    destination_port_range     = "22"
     source_address_prefix      = jsondecode(data.curl.public_ip.response).ip
     source_port_range          = "*"
   }
