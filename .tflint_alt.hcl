@@ -6,7 +6,7 @@ SET THIS FILE'S PATH TO $TFLINT_CONFIG ENVVIRONMENT VARIABLE.
 
 plugin "azurerm" {
   enabled = true
-  version = "0.20.0"
+  version = "0.21.0"
   source  = "github.com/terraform-linters/tflint-ruleset-azurerm"
 }
 
@@ -193,35 +193,35 @@ rule "terraform_workspace_remote" {
 }
 
 rule "terraform_locals_order" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_output_order" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_output_separate" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_variable_nullable_false" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_variable_order" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_variable_separate" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_resource_data_arg_layout" {
-  enabled = true
+  enabled = false
 }
 
 rule "azurerm_arg_order" {
-  enabled = true
+  enabled = false
 }
 
 rule "azurerm_resource_tag" {
