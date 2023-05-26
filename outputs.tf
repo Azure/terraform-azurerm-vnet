@@ -18,6 +18,11 @@ output "vnet_name" {
   value       = azurerm_virtual_network.vnet.name
 }
 
+output "vnet_guid" {
+  description = "The GUID of the newly created vNet"
+  value       = azurerm_virtual_network.vnet.guid
+}
+
 output "vnet_subnets" {
   description = "The ids of subnets created inside the newly created vNet"
   value       = local.azurerm_subnets[*].id
