@@ -242,8 +242,8 @@ No modules.
 | Name                                                                                                   | Description                                                                                           |
 |--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
 | <a name="output_vnet_address_space"></a> [vnet\_address\_space](#output\_vnet\_address\_space)         | The address space of the newly created vNet                                                           |
+| <a name="output_vnet_guid"></a> [vnet\_guid](#output\_vnet\_guid)                                      | The GUID of the newly created vNet                                                                    |
 | <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id)                                            | The id of the newly created vNet                                                                      |
-| <a name="output_vnet_guid"></a> [vnet\_guid](#output\_vnet\_guid)                                      | The GUID of the newly created vNet                                                                      |
 | <a name="output_vnet_location"></a> [vnet\_location](#output\_vnet\_location)                          | The location of the newly created vNet                                                                |
 | <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name)                                      | The Name of the newly created vNet                                                                    |
 | <a name="output_vnet_subnets"></a> [vnet\_subnets](#output\_vnet\_subnets)                             | The ids of subnets created inside the newly created vNet                                              |
