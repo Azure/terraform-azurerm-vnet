@@ -94,10 +94,8 @@ variable "subnet_service_endpoints" {
 }
 
 variable "tags" {
-  type = map(string)
-  default = {
-    ENV = "test"
-  }
+  type        = map(string)
+  default     = {}
   description = "The tags to associate with your network and subnets."
 }
 
