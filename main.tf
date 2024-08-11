@@ -4,7 +4,6 @@ resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   resource_group_name = var.resource_group_name
   bgp_community       = var.bgp_community
-  dns_servers         = var.dns_servers
   tags = merge(var.tags, (/*<box>*/ (var.tracing_tags_enabled ? { for k, v in /*</box>*/ {
     avm_git_commit           = "2b2f05969200c71b6609f4cdfa9120d48af55537"
     avm_git_file             = "main.tf"
@@ -23,6 +22,10 @@ resource "azurerm_virtual_network" "vnet" {
       enable = ddos_protection_plan.value.enable
       id     = ddos_protection_plan.value.id
     }
+  }
+
+  lifecycle {
+    ignore_changes = [dns_servers]
   }
 }
 
@@ -101,4 +104,11 @@ resource "azurerm_subnet_route_table_association" "vnet" {
 
   route_table_id = each.value
   subnet_id      = local.azurerm_subnets_name_id_map[each.key]
+}
+
+resource "azurerm_virtual_network_dns_servers" "vnet_dns" {
+  count = length(var.dns_servers) > 0 ? 1 : 0
+
+  dns_servers        = var.dns_servers
+  virtual_network_id = azurerm_virtual_network.vnet.id
 }
