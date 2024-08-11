@@ -105,10 +105,3 @@ resource "azurerm_subnet_route_table_association" "vnet" {
   route_table_id = each.value
   subnet_id      = local.azurerm_subnets_name_id_map[each.key]
 }
-
-resource "azurerm_virtual_network_dns_servers" "vnet_dns" {
-  count = length(var.dns_servers) > 0 ? 1 : 0
-
-  dns_servers        = var.dns_servers
-  virtual_network_id = azurerm_virtual_network.vnet.id
-}
