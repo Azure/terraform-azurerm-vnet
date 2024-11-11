@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- remove default value for tags [\#174](https://github.com/Azure/terraform-azurerm-vnet/pull/174) ([lonegunmanb](https://github.com/lonegunmanb))
 - bump dep [\#173](https://github.com/Azure/terraform-azurerm-vnet/pull/173) ([lonegunmanb](https://github.com/lonegunmanb))
 - Bump github.com/Azure/terraform-module-test-helper from 0.16.0 to 0.26.0 in /test [\#170](https://github.com/Azure/terraform-azurerm-vnet/pull/170) ([lonegunmanb](https://github.com/lonegunmanb))
 - Use oidc as authentication method for e2e test [\#168](https://github.com/Azure/terraform-azurerm-vnet/pull/168) ([lonegunmanb](https://github.com/lonegunmanb))
