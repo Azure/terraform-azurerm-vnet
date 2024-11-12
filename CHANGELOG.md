@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- Make `dns_servers` a separated resource block [\#176](https://github.com/Azure/terraform-azurerm-vnet/pull/176) ([lonegunmanb](https://github.com/lonegunmanb))
 - replace deprecated arguments [\#175](https://github.com/Azure/terraform-azurerm-vnet/pull/175) ([lonegunmanb](https://github.com/lonegunmanb))
 - remove default value for tags [\#174](https://github.com/Azure/terraform-azurerm-vnet/pull/174) ([lonegunmanb](https://github.com/lonegunmanb))
 - bump dep [\#173](https://github.com/Azure/terraform-azurerm-vnet/pull/173) ([lonegunmanb](https://github.com/lonegunmanb))
