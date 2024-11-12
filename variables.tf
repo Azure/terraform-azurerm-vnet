@@ -31,6 +31,13 @@ variable "ddos_protection_plan" {
   description = "The set of DDoS protection plan configuration"
 }
 
+# If no values specified, this defaults to Azure DNS
+variable "dns_servers" {
+  type        = list(string)
+  default     = []
+  description = "The DNS servers to be used with vNet."
+}
+
 variable "nsg_ids" {
   type = map(string)
   default = {

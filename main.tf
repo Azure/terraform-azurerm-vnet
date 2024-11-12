@@ -29,6 +29,13 @@ resource "azurerm_virtual_network" "vnet" {
   }
 }
 
+resource "azurerm_virtual_network_dns_servers" "this" {
+  count = var.dns_servers != null ? 1 : 0
+
+  virtual_network_id = azurerm_virtual_network.vnet.id
+  dns_servers        = var.dns_servers
+}
+
 moved {
   from = azurerm_subnet.subnet
   to   = azurerm_subnet.subnet_count
