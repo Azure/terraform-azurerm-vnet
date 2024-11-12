@@ -4,10 +4,12 @@
 
 **Merged pull requests:**
 
+- replace deprecated arguments [\#175](https://github.com/Azure/terraform-azurerm-vnet/pull/175) ([lonegunmanb](https://github.com/lonegunmanb))
 - remove default value for tags [\#174](https://github.com/Azure/terraform-azurerm-vnet/pull/174) ([lonegunmanb](https://github.com/lonegunmanb))
 - bump dep [\#173](https://github.com/Azure/terraform-azurerm-vnet/pull/173) ([lonegunmanb](https://github.com/lonegunmanb))
 - Bump github.com/Azure/terraform-module-test-helper from 0.16.0 to 0.26.0 in /test [\#170](https://github.com/Azure/terraform-azurerm-vnet/pull/170) ([lonegunmanb](https://github.com/lonegunmanb))
 - Use oidc as authentication method for e2e test [\#168](https://github.com/Azure/terraform-azurerm-vnet/pull/168) ([lonegunmanb](https://github.com/lonegunmanb))
+- no more default tags [\#153](https://github.com/Azure/terraform-azurerm-vnet/pull/153) ([lonegunmanb](https://github.com/lonegunmanb))
 - Prepare for 5.0.0 [\#140](https://github.com/Azure/terraform-azurerm-vnet/pull/140) ([lonegunmanb](https://github.com/lonegunmanb))
 - Update README.md [\#138](https://github.com/Azure/terraform-azurerm-vnet/pull/138) ([radzag](https://github.com/radzag))
 - Bump github.com/Azure/terraform-module-test-helper from 0.15.0 to 0.16.0 in /test [\#137](https://github.com/Azure/terraform-azurerm-vnet/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
