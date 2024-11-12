@@ -99,11 +99,17 @@ locals {
   }
 }
 
+resource "time_sleep" "wait_1_sec" {
+  create_duration = "1s"
+  depends_on      = [azurerm_subnet.subnet_for_each, azurerm_subnet.subnet_count]
+}
+
 resource "azurerm_subnet_network_security_group_association" "vnet" {
   for_each = var.nsg_ids
 
   network_security_group_id = each.value
   subnet_id                 = local.azurerm_subnets_name_id_map[each.key]
+  depends_on                = [time_sleep.wait_1_sec]
 }
 
 resource "azurerm_subnet_route_table_association" "vnet" {
