@@ -4,12 +4,6 @@ variable "resource_group_name" {
   nullable    = false
 }
 
-variable "use_for_each" {
-  type        = bool
-  description = "Use `for_each` instead of `count` to create multiple resource instances."
-  nullable    = false
-}
-
 variable "vnet_location" {
   type        = string
   description = "The location of the vnet to create."
@@ -112,6 +106,13 @@ variable "tracing_tags_prefix" {
   type        = string
   default     = "avm_"
   description = "Default prefix for generated tracing tags"
+  nullable    = false
+}
+
+variable "use_for_each" {
+  type        = bool
+  default     = true
+  description = "Use `for_each` instead of `count` to create multiple resource instances. Defaults to `true`."
   nullable    = false
 }
 
