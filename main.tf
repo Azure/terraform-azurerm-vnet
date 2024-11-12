@@ -100,8 +100,9 @@ locals {
 }
 
 resource "time_sleep" "wait_1_sec" {
-  create_duration = "1s"
-  depends_on      = [azurerm_subnet.subnet_for_each, azurerm_subnet.subnet_count]
+  create_duration  = "1s"
+  destroy_duration = "1s"
+  depends_on       = [azurerm_subnet.subnet_for_each, azurerm_subnet.subnet_count]
 }
 
 resource "azurerm_subnet_network_security_group_association" "vnet" {
