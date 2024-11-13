@@ -1,5 +1,7 @@
 # Changelog
 
+## [5.0.1](https://github.com/Azure/terraform-azurerm-vnet/tree/5.0.1) (2024-11-13)
+
 ## [5.0.0](https://github.com/Azure/terraform-azurerm-vnet/tree/5.0.0) (2024-11-12)
 
 **Merged pull requests:**
