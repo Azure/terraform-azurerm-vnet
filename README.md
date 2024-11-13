@@ -1,4 +1,6 @@
-# terraform-azurerm-vnet
+# [DEPRECATED] terraform-azurerm-vnet
+
+> **NOTE:** This terraform-azurerm-vnet module is now deprecated. The module will no longer receive updates or support. Users are encouraged to transition to the [avm-res-network-virtualnetwork](https://github.com/Azure/terraform-azurerm-avm-res-network-virtualnetwork) module for future deployments.
 
 ## Create a basic virtual network in Azure
 
